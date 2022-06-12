@@ -7,8 +7,8 @@ import (
 
 func TestRomanNumerals(t *testing.T) {
 	cases := []struct {
-		number int
-		want   string
+		given int
+		expected   string
 	}{
 		{1, "I"},
 		{2, "II"},
@@ -22,11 +22,11 @@ func TestRomanNumerals(t *testing.T) {
 	}
 
 	for _, test := range cases {
-		t.Run(fmt.Sprintf("%d got converted to %s", test.number, test.want), func(t *testing.T) {
-			got := ConvertToRoman(test.number)
+		t.Run(fmt.Sprintf("%d got converted to %s", test.given, test.expected), func(t *testing.T) {
+			got := ConvertToRoman(test.given)
 
-			if got != test.want {
-				t.Errorf("got %v, want %v", got, test.want)
+			if got != test.expected {
+				t.Errorf("got %v, exected %v", got, test.expected)
 			}
 		})
 	}
