@@ -1,6 +1,7 @@
 # Roman
 
 [![Code Coverage](https://codecov.io/gh/UltiRequiem/roman/branch/main/graph/badge.svg)](https://codecov.io/gh/UltiRequiem/roman)
+[![Go Reference](https://pkg.go.dev/badge/github.com/UltiRequiem/roman.svg)](https://pkg.go.dev/github.com/UltiRequiem/roman)
 
 Convert Numbers to Roman numerals.
 
@@ -20,6 +21,12 @@ func main() {
 	fmt.Println(roman) //=> XXXIII
 }
 ```
+
+It includes other helper methods, check the docs.
+
+## Documentation
+
+Is hosted on [Go Doc](https://pkg.go.dev/github.com/UltiRequiem/roman) 📄
 
 ## Support
 
