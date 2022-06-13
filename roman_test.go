@@ -26,7 +26,7 @@ func TestRomanNumerals(t *testing.T) {
 			got, errrorConverting := ConvertToRoman(test.given)
 
 			if errrorConverting != nil {
-                                t.Error(errrorConverting)
+				t.Error(errrorConverting)
 			}
 
 			if got != test.expected {
@@ -34,5 +34,23 @@ func TestRomanNumerals(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestErrors(t *testing.T) {
+	t.Run("Number lower than 1 returns an error", func(t *testing.T) {
+		_, error := ConvertToRoman(-3)
+
+		if error == nil {
+			t.Error("Expected an error, didn't get one.")
+		}
+	})
+
+	t.Run("Number greater than 3999 returns an error", func(t *testing.T) {
+		_, error := ConvertToRoman(5000)
+
+		if error == nil {
+			t.Error("Expected an error, didn't get one.")
+		}
+	})
 
 }
