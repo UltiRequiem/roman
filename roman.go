@@ -1,6 +1,9 @@
 package roman
 
-import "strings"
+import (
+	"errors"
+	"strings"
+)
 
 type RomanNumeral struct {
 	Value  int
@@ -23,7 +26,13 @@ var RomanNumerals = []RomanNumeral{
 	{1, "I"},
 }
 
-func ConvertToRoman(number int) string {
+func ConvertToRoman(number int) (string, error) {
+	ableToConvert := InRomanLimits(number)
+
+	if ableToConvert != nil {
+		return "", ableToConvert
+	}
+
 	var result strings.Builder
 
 	for _, numeral := range RomanNumerals {
@@ -33,5 +42,17 @@ func ConvertToRoman(number int) string {
 		}
 	}
 
-	return result.String()
+	return result.String(), nil
+}
+
+func InRomanLimits(number int) error {
+	if number > 3999 {
+		return errors.New("The biggest number we can form in Roman numerals is MMMCMXCIX (3999).")
+	}
+
+	if number < 1 {
+		return errors.New("There is no concept of 0 or negatives in Roman numerals.")
+	}
+
+	return nil
 }
