@@ -1,6 +1,25 @@
 # Roman
 
+[![Code Coverage](https://codecov.io/gh/UltiRequiem/roman/branch/main/graph/badge.svg)](https://codecov.io/gh/UltiRequiem/roman)
+
 Convert Numbers to Roman numerals.
+
+## Usage
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/UltiRequiem/roman"
+)
+
+func main() {
+	roman, _ := roman.ConvertToRoman(33)
+
+	fmt.Println(roman) //=> XXXIII
+}
+```
 
 ## Support
 
