@@ -14,14 +14,18 @@ func main() {
 		os.Exit(1)
 	}
 
-	number, err := strconv.Atoi(os.Args[1])
-	if err != nil {
-		panic(err)
+	number, errorParsingInput := strconv.Atoi(os.Args[1])
+
+	if errorParsingInput != nil {
+		fmt.Println(errorParsingInput)
+		os.Exit(1)
 	}
 
-	numeral, err := roman.ConvertToRoman(number)
-	if err != nil {
-		panic(err)
+	numeral, errrorConvertingInput := roman.ConvertToRoman(number)
+
+	if errrorConvertingInput != nil {
+		fmt.Println(errorParsingInput)
+		os.Exit(1)
 	}
 
 	fmt.Println(numeral)
