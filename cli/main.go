@@ -21,7 +21,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	numeral, errrorConvertingInput := roman.ConvertToRoman(number)
+	numeral, errrorConvertingInput := roman.ConvertToRoman(uint16(number))
 
 	if errrorConvertingInput != nil {
 		fmt.Println(errorParsingInput)

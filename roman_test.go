@@ -7,7 +7,7 @@ import (
 
 func TestRomanNumerals(t *testing.T) {
 	cases := []struct {
-		given    int
+		given    uint16
 		expected string
 	}{
 		{1, "I"},
@@ -38,7 +38,7 @@ func TestRomanNumerals(t *testing.T) {
 
 func TestErrors(t *testing.T) {
 	t.Run("Number lower than 1 returns an error", func(t *testing.T) {
-		_, error := ConvertToRoman(-3)
+		_, error := ConvertToRoman(0)
 
 		if error == nil {
 			t.Error("Expected an error, didn't get one.")

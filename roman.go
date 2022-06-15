@@ -6,7 +6,7 @@ import (
 )
 
 type RomanNumeral struct {
-	Value  int
+	Value  uint16
 	Symbol string
 }
 
@@ -26,7 +26,7 @@ var RomanNumerals = []RomanNumeral{
 	{1, "I"},
 }
 
-func ConvertToRoman(number int) (string, error) {
+func ConvertToRoman(number uint16) (string, error) {
 	ableToConvert := InRomanLimits(number)
 
 	if ableToConvert != nil {
@@ -45,7 +45,7 @@ func ConvertToRoman(number int) (string, error) {
 	return result.String(), nil
 }
 
-func InRomanLimits(number int) error {
+func InRomanLimits(number uint16) error {
 	if number > 3999 {
 		return errors.New("The biggest number we can form in Roman numerals is MMMCMXCIX (3999).")
 	}
