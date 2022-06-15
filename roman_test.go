@@ -67,4 +67,12 @@ func TestParseRoman(t *testing.T) {
 			}
 		})
 	}
+
+	t.Run("Invalid Roman numerals returns an error.", func(t *testing.T) {
+		_, errorParsing := ParseRoman("XXXX")
+
+		if errorParsing == nil {
+			t.Error("Expected an error, didn't get one.")
+		}
+	})
 }
