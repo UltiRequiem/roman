@@ -6,12 +6,14 @@ import (
 )
 
 func main() {
-	roman, error := roman.ConvertToRoman(33)
+	romanNumeral, error := roman.ConvertToRoman(33)
 
 	if error != nil {
                 fmt.Println(error)
                 return
 	}
 
-	fmt.Println(roman) //=> XXXIII
+	fmt.Println(romanNumeral) //=> XXXIII
+
+        fmt.Println(roman.ParseRoman("XXXIII"))
 }

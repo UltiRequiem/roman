@@ -26,6 +26,28 @@ var RomanNumerals = []RomanNumeral{
 	{1, "I"},
 }
 
+func ParseRoman(romanNumeral string) (uint16, error) {
+	var result uint16 = 0
+
+	for _, numeral := range RomanNumerals {
+		counter := 0
+
+		for strings.HasPrefix(romanNumeral, numeral.Symbol) {
+			if counter > 2 {
+				return 0, errors.New("Invalid Roman numeral.")
+			}
+
+			result += numeral.Value
+
+			romanNumeral = romanNumeral[len(numeral.Symbol):]
+
+			counter++
+		}
+	}
+
+	return result, nil
+}
+
 func ConvertToRoman(number uint16) (string, error) {
 	ableToConvert := InRomanLimits(number)
 
