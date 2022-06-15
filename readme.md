@@ -19,6 +19,8 @@ func main() {
 	roman, _ := roman.ConvertToRoman(33)
 
 	fmt.Println(roman) //=> XXXIII
+
+        fmt.Println(roman.ParseRoman("XXXIII")) //=> 33
 }
 ```
 
