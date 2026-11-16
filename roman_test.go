@@ -76,3 +76,49 @@ func TestParseRoman(t *testing.T) {
 		}
 	})
 }
+
+func TestParseRomanRejectsNonCanonical(t *testing.T) {
+	for _, input := range []string{"IIX", "VX", "IL", "IVI", "XCX", "VV", "CMCM", "MCMXCIV ", "ABC", "iv", "", "é", "MMMM"} {
+		if _, err := ParseRoman(input); err == nil {
+			t.Errorf("expected an error parsing %q", input)
+		}
+	}
+}
+
+func TestRoundTrip(t *testing.T) {
+	for n := uint16(1); n <= 3999; n++ {
+		numeral, err := ConvertToRoman(n)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		got, err := ParseRoman(numeral)
+		if err != nil || got != n {
+			t.Fatalf("%d -> %s -> %d (%v)", n, numeral, got, err)
+		}
+	}
+}
+
+func BenchmarkConvertToRoman(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		for n := uint16(1); n <= 3999; n++ {
+			_, _ = ConvertToRoman(n)
+		}
+	}
+}
+
+func BenchmarkParseRoman(b *testing.B) {
+	numerals := make([]string, 0, 3999)
+	for n := uint16(1); n <= 3999; n++ {
+		s, _ := ConvertToRoman(n)
+		numerals = append(numerals, s)
+	}
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		for _, s := range numerals {
+			_, _ = ParseRoman(s)
+		}
+	}
+}

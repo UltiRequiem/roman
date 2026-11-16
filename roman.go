@@ -1,9 +1,6 @@
 package roman
 
-import (
-	"errors"
-	"strings"
-)
+import "errors"
 
 type RomanNumeral struct {
 	Value  uint16
@@ -26,45 +23,71 @@ var RomanNumerals = []RomanNumeral{
 	{1, "I"},
 }
 
+var (
+	ones      = [...]string{"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"}
+	tens      = [...]string{"", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"}
+	hundreds  = [...]string{"", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"}
+	thousands = [...]string{"", "M", "MM", "MMM"}
+)
+
+// romanTable holds every Roman numeral from 1 to 3999, indexed by the number
+// itself, so conversion is a single array lookup.
+var romanTable = func() (table [4000]string) {
+	for n := 1; n < len(table); n++ {
+		table[n] = thousands[n/1000] + hundreds[n/100%10] + tens[n/10%10] + ones[n%10]
+	}
+
+	return
+}()
+
+// charValues maps a Roman numeral character to its value (0 if invalid).
+var charValues = [256]uint16{
+	'I': 1,
+	'V': 5,
+	'X': 10,
+	'L': 50,
+	'C': 100,
+	'D': 500,
+	'M': 1000,
+}
+
+var errInvalidNumeral = errors.New("Invalid Roman numeral.")
+
 func ParseRoman(romanNumeral string) (uint16, error) {
-	var result uint16 = 0
+	var result, previous uint16
 
-	for _, numeral := range RomanNumerals {
-		counter := 0
+	// Walk right to left: a smaller value before a bigger one is subtracted.
+	for i := len(romanNumeral) - 1; i >= 0; i-- {
+		value := charValues[romanNumeral[i]]
 
-		for strings.HasPrefix(romanNumeral, numeral.Symbol) {
-			if counter > 2 {
-				return 0, errors.New("Invalid Roman numeral.")
-			}
-
-			result += numeral.Value
-
-			romanNumeral = romanNumeral[len(numeral.Symbol):]
-
-			counter++
+		if value == 0 {
+			return 0, errInvalidNumeral
 		}
+
+		if value < previous {
+			result -= value
+		} else {
+			result += value
+		}
+
+		previous = value
+	}
+
+	// Every number has exactly one canonical numeral, so anything that does
+	// not round-trip (IIX, VX, XXXX, CMCM, the empty string...) is invalid.
+	if result == 0 || result > 3999 || romanTable[result] != romanNumeral {
+		return 0, errInvalidNumeral
 	}
 
 	return result, nil
 }
 
 func ConvertToRoman(number uint16) (string, error) {
-	ableToConvert := InRomanLimits(number)
-
-	if ableToConvert != nil {
-		return "", ableToConvert
+	if err := InRomanLimits(number); err != nil {
+		return "", err
 	}
 
-	var result strings.Builder
-
-	for _, numeral := range RomanNumerals {
-		for number >= numeral.Value {
-			result.WriteString(numeral.Symbol)
-			number -= numeral.Value
-		}
-	}
-
-	return result.String(), nil
+	return romanTable[number], nil
 }
 
 func InRomanLimits(number uint16) error {
